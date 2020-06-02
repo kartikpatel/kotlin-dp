@@ -1,35 +1,35 @@
 package com.kotlinbykartik.visitor
 
-internal interface CarElement {
-    fun accept(visitor: CarElementVisitor)
+sealed class CarElement {
+    abstract fun accept(visitor: CarElementVisitor)
 }
 
-internal interface CarElementVisitor {
+interface CarElementVisitor {
     fun visit(body: Body)
     fun visit(car: Car)
     fun visit(engine: Engine)
     fun visit(wheel: Wheel)
 }
 
-internal class Wheel(val name: String) : CarElement {
+class Wheel(val name: String) : CarElement() {
     override fun accept(visitor: CarElementVisitor) {
         visitor.visit(this)
     }
 }
 
-internal class Body : CarElement {
+class Body : CarElement() {
     override fun accept(visitor: CarElementVisitor) {
         visitor.visit(this)
     }
 }
 
-internal class Engine : CarElement {
+class Engine : CarElement() {
     override fun accept(visitor: CarElementVisitor) {
         visitor.visit(this)
     }
 }
 
-internal class Car : CarElement {
+class Car : CarElement() {
     private val elements: List<CarElement> = listOf(
         Wheel("front left"), Wheel("front right"),
         Wheel("back left"), Wheel("back right"),
