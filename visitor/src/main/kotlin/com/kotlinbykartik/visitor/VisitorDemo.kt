@@ -1,34 +1,18 @@
 package com.kotlinbykartik.visitor
 
 sealed class CarElement {
-    abstract fun accept(visitor: CarElementVisitor)
+    open fun accept(visitor: CarElementVisitor) {
+        visitor.visit(this)
+    }
 }
 
 interface CarElementVisitor {
-    fun visit(body: Body)
-    fun visit(car: Car)
-    fun visit(engine: Engine)
-    fun visit(wheel: Wheel)
+    fun visit(element: CarElement)
 }
 
-class Wheel(val name: String) : CarElement() {
-    override fun accept(visitor: CarElementVisitor) {
-        visitor.visit(this)
-    }
-}
-
-class Body : CarElement() {
-    override fun accept(visitor: CarElementVisitor) {
-        visitor.visit(this)
-    }
-}
-
-class Engine : CarElement() {
-    override fun accept(visitor: CarElementVisitor) {
-        visitor.visit(this)
-    }
-}
-
+class Wheel(val name: String) : CarElement()
+class Body : CarElement()
+class Engine : CarElement()
 class Car : CarElement() {
     private val elements: List<CarElement> = listOf(
         Wheel("front left"), Wheel("front right"),
@@ -45,37 +29,23 @@ class Car : CarElement() {
 }
 
 internal class CarElementDoVisitor : CarElementVisitor {
-    override fun visit(body: Body) {
-        println("Moving my body")
-    }
-
-    override fun visit(car: Car) {
-        println("Starting my car")
-    }
-
-    override fun visit(wheel: Wheel) {
-        println("Kicking my " + wheel.name + " wheel")
-    }
-
-    override fun visit(engine: Engine) {
-        println("Starting my engine")
+    override fun visit(element: CarElement) {
+        when (element) {
+            is Body -> println("Moving my body")
+            is Car -> println("Starting my car")
+            is Wheel -> println("Kicking my " + element.name + " wheel")
+            is Engine -> println("Starting my engine")
+        }
     }
 }
 
 internal class CarElementPrintVisitor : CarElementVisitor {
-    override fun visit(body: Body) {
-        println("Visiting body")
-    }
-
-    override fun visit(car: Car) {
-        println("Visiting car")
-    }
-
-    override fun visit(engine: Engine) {
-        println("Visiting engine")
-    }
-
-    override fun visit(wheel: Wheel) {
-        println("Visiting " + wheel.name + " wheel")
+    override fun visit(element: CarElement) {
+        when (element) {
+            is Body -> println("Visiting body")
+            is Car -> println("Visiting car")
+            is Wheel -> println("Visiting " + element.name + " wheel")
+            is Engine -> println("Starting my engine")
+        }
     }
 }
