@@ -21,9 +21,7 @@ class Car : CarElement() {
     )
 
     override fun accept(visitor: Visitor<CarElement>) {
-        for (element in elements) {
-            element.accept(visitor)
-        }
+        elements.forEach { it.accept(visitor) }
         visitor.visit(this)
     }
 }
