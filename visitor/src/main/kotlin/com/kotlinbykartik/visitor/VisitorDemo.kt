@@ -1,13 +1,13 @@
 package com.kotlinbykartik.visitor
 
 sealed class CarElement {
-    open fun accept(visitor: CarElementVisitor) {
+    open fun accept(visitor: Visitor<CarElement>) {
         visitor.visit(this)
     }
 }
 
-interface CarElementVisitor {
-    fun visit(element: CarElement)
+interface Visitor<T> {
+    fun visit(element: T)
 }
 
 class Wheel(val name: String) : CarElement()
@@ -20,7 +20,7 @@ class Car : CarElement() {
         Body(), Engine()
     )
 
-    override fun accept(visitor: CarElementVisitor) {
+    override fun accept(visitor: Visitor<CarElement>) {
         for (element in elements) {
             element.accept(visitor)
         }
@@ -28,7 +28,7 @@ class Car : CarElement() {
     }
 }
 
-internal class CarElementDoVisitor : CarElementVisitor {
+internal class CarElementDoVisitor : Visitor<CarElement> {
     override fun visit(element: CarElement) {
         when (element) {
             is Body -> println("Moving my body")
@@ -39,7 +39,7 @@ internal class CarElementDoVisitor : CarElementVisitor {
     }
 }
 
-internal class CarElementPrintVisitor : CarElementVisitor {
+internal class CarElementPrintVisitor : Visitor<CarElement> {
     override fun visit(element: CarElement) {
         when (element) {
             is Body -> println("Visiting body")
